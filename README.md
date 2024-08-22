@@ -33,7 +33,7 @@ A minimalistic and interactive Click Speed Test game that allows users to measur
 
 ## Demo
 
-You can view a live demo of the Click Speed Test [here](#).
+You can view a live demo of the Click Speed Test [here](https://click-speed-test-xi.vercel.app/).
 
 ## Technologies Used
 
