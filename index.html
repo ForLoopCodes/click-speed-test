@@ -118,7 +118,7 @@
             availTime -= 0.1;
             outerTime = availTime;
             timeElement.innerHTML =
-              parseInt(availTime) > 0 ? availTime.toFixed(1) : 0;
+              availTime.toFixed(1) > 0 ? availTime.toFixed(1) : 0;
             if (availTime > 0) {
               interval();
             }
