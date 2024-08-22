@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>click speed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+      html,
+      body,
+      .viewport {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        background: black;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: inter;
+        user-select: none;
+      }
+      * {
+        transition: all 0.1s ease-in-out;
+      }
+      input::placeholder {
+        color: #fff !important;
+      }
+      input:focus {
+        outline: none;
+      }
+      .spaceMono {
+        font-family: space mono;
+      }
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="flex justify-between w-72 z-1" style="z-index: 1">
+      <span class="fixed top-2 left-4 pointer-events-none spaceMono opacity-70">
+        Clicks/CPS
+      </span>
+      <span
+        class="number fixed top-8 left-4 text-2xl pointer-events-none spaceMono"
+      >
+        0/0
+      </span>
+      <span
+        class="fixed top-2 right-4 pointer-events-none spaceMono opacity-70"
+      >
+        Time
+      </span>
+      <span
+        class="time fixed top-8 right-4 text-2xl pointer-events-none spaceMono"
+      >
+        0
+      </span>
+      <button
+        onClick="window.location.reload()"
+        class="text-white opacity-70 w-content h-content fixed bottom-4 right-4 spaceMono border-neutral-600 border-2 hover:border-blue-900 rounded-lg px-3 py-1"
+      >
+        Reset
+      </button>
+    </h1>
+
+    <input
+      onKeyUp="setChange()"
+      class="inp bg-black border-2 border-neutral-600 rounded-lg bottom-4 px-4 py-1 fixed left-4 text-center hover:border-blue-900 focus:border-blue-900 spaceMono opacity-70"
+      style="z-index: 1"
+      type="number"
+    />
+
+    <button
+      class="range h-full w-full rounded-2xl fixed z-0"
+      style="z-index: 0"
+      onClick="increase()"
+    />
+    <script>
+      [para, numClick, started, time] = [
+        document.querySelector(".number"),
+        0,
+        false,
+        5,
+      ];
+      outerTime = time;
+      timeElement = document.querySelector(".time");
+      document.querySelector(".inp").placeholder = time.toFixed(1) + " secs";
+      timeElement.innerHTML = time.toFixed(1);
+      let cps = 0;
+      function increase() {
+        if (numClick == 0) {
+          started = true;
+          setTimeout(() => {
+            started = false;
+          }, time * 1000);
+          setTime(time);
+        }
+        if (started == true) {
+          numClick++;
+          blink();
+          cps = Math.abs((numClick / (time - outerTime)).toFixed(3));
+          outerTime !== time
+            ? (para.innerHTML = numClick + "/" + cps)
+            : (para.innerHTML = numClick + "/started");
+        }
+      }
+      function setTime(availTime) {
+        function interval() {
+          setTimeout(() => {
+            availTime -= 0.1;
+            outerTime = availTime;
+            timeElement.innerHTML =
+              parseInt(availTime) > 0 ? availTime.toFixed(1) : 0;
+            if (availTime > 0) {
+              interval();
+            }
+          }, 100);
+        }
+        interval();
+      }
+      function blink() {
+        if (cps > 0 && cps <= 3) {
+          document.querySelector("body").style.background = "#00FFFF55";
+        }
+        if (cps > 3 && cps <= 6) {
+          document.querySelector("body").style.background = "#32a87b55";
+        }
+        if (cps > 6 && cps <= 9) {
+          document.querySelector("body").style.background = "#69a83255";
+        }
+        if (cps > 9 && cps <= 12) {
+          document.querySelector("body").style.background = "#a8a83288";
+        }
+        if (cps > 12 && cps <= 15) {
+          document.querySelector("body").style.background = "#a86f3255";
+        }
+        if (cps > 15) {
+          document.querySelector("body").style.background = "#ff000055";
+        }
+        setTimeout(() => {
+          document.querySelector("body").style.background = "#000";
+        }, 100);
+      }
+      function setChange() {
+        if (document.querySelector(".inp").value > 0.5) {
+          time = document.querySelector(".inp").value;
+          timeElement.innerHTML = time;
+        }
+      }
+    </script>
+  </body>
+</html>
